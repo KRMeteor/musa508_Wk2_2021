@@ -82,7 +82,7 @@ palette5 <- c("#f0f9e8","#bae4bc","#7bccc4","#43a2ca","#0868ac")
 
 # Load census API key
 
-census_api_key("YOUR API KEY GOES HERE", overwrite = TRUE)
+census_api_key("f75c994cf9151eecca2d2f379ec6962793e32828", overwrite = TRUE)
 
 # ---- Year 2009 tracts -----
 
@@ -163,7 +163,8 @@ tracts09 <-
   tracts09 %>%
   dplyr::select( -NAME, -moe) %>%
   spread(variable, estimate) %>%
-  dplyr::select(-geometry) %>%
+  # dplyr::select(-geometry) %>% 错的
+  # st_drop_geometry() %>%
   rename(TotalPop = B25026_001, 
          Whites = B02001_002,
          FemaleBachelors = B15001_050, 
@@ -236,7 +237,7 @@ ggplot() +
   geom_sf(data=septaStops, 
           aes(colour = Line), 
           show.legend = "point", size= 2) +
-  scale_colour_manual(values = c("orange","blue")) +
+  scale_colour_manual(values = c("orange","blue"), name = "Transit Line") +
   labs(title="Septa Stops", 
        subtitle="Philadelphia, PA", 
        caption="Figure 2.5") +
